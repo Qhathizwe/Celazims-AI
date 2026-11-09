@@ -65,6 +65,72 @@ These identity instructions are included in the assistant's system prompt.
 | Qwen | Generating AI responses |
 | Browser Local Storage | Saving conversation history |
 
+ 
+## ⚙️ Total Duration and Tokens per Second
+
+Celazims-AI displays AI performance statistics underneath every generated response.
+
+### Total Duration
+
+The `total_duration` property represents the total time spent generating the response, measured in nanoseconds.
+
+Convert it into seconds:
+
+```typescript
+const totalDuration = data.total_duration / 1_000_000_000;
+```
+
+### Tokens per Second
+
+Ollama provides two important properties:
+
+- `eval_count`: Number of tokens generated.
+- `eval_duration`: Time spent generating those tokens, in nanoseconds.
+
+Calculate the generation speed:
+
+```typescript
+const tokensPerSecond =
+  data.eval_count / (data.eval_duration / 1_000_000_000);
+```
+
+###  Example API Response
+
+```json
+{
+  "message": {
+    "role": "assistant",
+    "content": "Hello! How can I help you today?"
+  },
+  "total_duration": 174560334,
+  "eval_count": 18,
+  "eval_duration": 52479709
+}
+```
+
+### Displaying the Statistics
+
+Under each AI response, the interface should display:
+
+```text
+Hello! How can I help you today?
+
+⏱ Duration: 0.17 seconds
+⚡ Speed: 343.0 tokens/sec
+```
+
+*The values above are illustrative; actual statistics depend on the model and hardware.*
+
+### Important Notes
+
+- Convert nanoseconds to seconds by dividing by `1,000,000,000`.
+- Calculate tokens per second using `eval_count` and `eval_duration`.
+- Do not calculate tokens per second using `total_duration`, because total duration includes more than token generation.
+- Handle missing or zero `eval_duration` values to avoid division by zero.
+
+**Official documentation:** [Ollama API Documentation – Chat](https://docs.ollama.com/api/chat)
+
+
 ## 📁 Application Structure
 
 The application code is intentionally kept in two main files.
