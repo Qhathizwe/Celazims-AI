@@ -1,106 +1,403 @@
 <img src="https://socialify.git.ci/Qhathizwe/Celazims-AI/image?language=1&name=1&owner=1&stargazers=1&theme=Auto" alt="Celazims-AI" width="640" height="320" />
 
  
-# Celazims-AI 🤖
+ 
+# 🤖 Celazims-AI
 
-### Your Personal AI Assistant
+### Your Personal AI Assistant — Intelligent Assistance, Powered Locally.
 
-Celazims-AI is a locally running AI chatbot built with React, TypeScript, and Ollama. It uses a locally installed Qwen language model to generate intelligent responses, answer questions, assist with programming, and support everyday learning and problem-solving.
-
-The project focuses on creating a simple, modern, and user-friendly AI chat experience without unnecessary complexity.
+![Celazims-AI](https://img.shields.io/badge/Celazims--AI-Personal%20AI%20Assistant-9b75ff?style=for-the-badge)
+![React](https://img.shields.io/badge/React-Frontend-61DAFB?style=flat-square&logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-Language-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![Ollama](https://img.shields.io/badge/Ollama-Local%20AI-black?style=flat-square)
+![Llama](https://img.shields.io/badge/Llama%203.2-AI%20Model-0467DF?style=flat-square)
 
 ---
 
-## 👨‍💻 About the Project
+## 📌 About the Project
 
-Celazims-AI is a personal AI assistant created by **Scelo Mike Phoswa**.
+**Celazims-AI** is a personal AI chatbot developed using React, TypeScript, and Ollama.
 
-The application connects a React frontend to Ollama, which runs the AI model locally on the user's computer. This allows users to interact with an AI assistant without relying on a cloud-based AI API.
+The application connects a modern frontend interface to a locally running AI language model, allowing users to communicate with an intelligent assistant directly from their browser.
 
-The assistant is designed to understand its identity, recognize its creator, explain its purpose, and respond to general questions.
+Unlike applications that depend entirely on external AI APIs, Celazims-AI uses Ollama to run its language model locally on the user's computer.
+
+The project is designed to provide an interactive, responsive, and intelligent chat experience with conversation management and AI performance monitoring.
+
+Celazims-AI was created by **Scelo Mike Phoswa** as a personal AI assistant and technology project.
 
 ## 🎯 Project Objectives
 
-- Build a functional AI chatbot using React and TypeScript.
-- Integrate a locally installed AI model through Ollama.
-- Provide a clean and responsive chat interface.
-- Maintain conversation history locally.
-- Create an assistant with a defined identity and purpose.
-- Demonstrate how frontend applications communicate with locally hosted AI models.
+The main objectives of Celazims-AI are to:
+
+- Develop a functional AI chatbot using React and TypeScript.
+- Integrate a locally hosted AI model through Ollama.
+- Create a modern and responsive conversational interface.
+- Implement automatic conversation saving.
+- Allow users to create and manage multiple conversations.
+- Display AI response-generation performance.
+- Understand how frontend applications communicate with locally hosted AI services.
+- Explore the practical implementation of artificial intelligence in web development.
+
+---
 
 ## ✨ Features
 
-- **AI-powered conversations:** Ask questions and receive AI-generated responses.
-- **Local AI integration:** Uses Ollama to run the language model locally.
-- **Chat interface:** Send messages and display AI responses in a conversational layout.
-- **Conversation history:** Save chat messages in browser local storage.
-- **Loading indicators:** Show when the AI is generating a response.
-- **Error handling:** Display helpful feedback when the AI service is unavailable.
-- **Response statistics:** Display response timing and generation speed when available.
-- **Clear conversation:** Start a fresh conversation.
-- **Responsive design:** Adapt the interface to desktop, tablet, and mobile screens.
-- **Personal AI identity:** Recognizes its name, creator, and purpose.
+### 1. AI-Powered Conversations
 
-## 🧠 AI Identity
+Celazims-AI allows users to communicate with a locally hosted language model.
 
-Celazims-AI follows three important identity instructions:
+Users can:
+- Ask general knowledge questions.
+- Learn programming concepts.
+- Explore technology topics.
+- Generate ideas.
+- Request explanations and examples.
+- Solve problems and explore different subjects.
+
+The AI responds using the locally installed Llama 3.2 model through Ollama.
+
+### 2. Personal AI Identity
+
+Celazims-AI has a defined identity through a system prompt.
 
 | Question | Expected response |
 |---|---|
-| Who are you? | I am Celazims-AI, a personal AI assistant powered by Qwen through Ollama and created by Scelo Mike Phoswa. |
-| Who am I? | You are Scelo Mike Phoswa, my creator and primary user. |
-| What is your purpose? | My purpose is to assist with programming, technology, education, research, creativity, problem-solving, general knowledge, and productivity. |
+| Who are you? | Celazims-AI, a personal AI assistant created by Scelo Mike Phoswa. |
+| Who am I? | Scelo Mike Phoswa, the creator and primary user. |
+| What is your purpose? | To assist with programming, technology, education, research, creativity, problem-solving, general knowledge, and productivity. |
 
-These identity instructions are included in the assistant's system prompt.
+The system prompt provides instructions that guide the assistant's behaviour and responses.
+
+### 3. Multiple Chat Conversations
+
+Celazims-AI supports multiple conversations instead of storing everything in a single chat.
+
+Features include:
+
+- Start a new conversation.
+- Automatically save conversations.
+- View previous conversations.
+- Open an existing conversation.
+- Delete individual conversations.
+- Clear all conversation history.
+- Display conversation titles and last updated dates.
+
+Conversation titles are automatically generated from the first user message.
+
+### 4. Automatic Chat History
+
+Conversations are saved using browser `localStorage`.
+
+This allows users to:
+- Refresh the application without losing saved conversations.
+- Return to previous conversations.
+- Continue an existing conversation.
+- Keep multiple conversations separately.
+
+The application uses the following storage key:
+
+```typescript
+const STORAGE_KEY = "celazims-conversations";
+```
+
+Previously saved single-chat messages can also be migrated into the new conversation-history format when available.
+
+**Note:** Browser local storage is device- and browser-specific. Clearing browser storage or using another browser may remove or make the saved conversations unavailable.
+
+### 5. AI Response Performance Statistics
+
+One of the main features of Celazims-AI is its ability to display performance information underneath each AI response.
+
+The application uses performance metadata returned by Ollama.
+
+Each response can display:
+
+| Statistic | Description |
+|---|---|
+| Total Duration | Total time taken by Ollama to process and generate the response. |
+| Tokens per Second | Average speed at which the model generated response tokens. |
+| Tokens Generated | Number of tokens generated by the model. |
+
+#### Total Duration
+
+Ollama returns the `total_duration` property in nanoseconds.
+
+The application converts it into seconds:
+
+```typescript
+const duration = data.total_duration / 1_000_000_000;
+```
+
+#### Tokens per Second
+
+Ollama provides two properties:
+
+- `eval_count`: Number of generated tokens.
+- `eval_duration`: Time spent generating those tokens in nanoseconds.
+
+The calculation is:
+
+```typescript
+const tokensPerSecond =
+  data.eval_count /
+  (data.eval_duration / 1_000_000_000);
+```
+
+The application also checks that `eval_duration` is greater than zero before performing the calculation.
+
+#### Example Display
+
+```text
+Celazims-AI
+
+Hello! How can I help you today?
+
+Duration: 1.24 seconds
+Speed: 42.5 tokens/sec
+Tokens: 53
+```
+
+*Example values are illustrative. Actual performance depends on the AI model, hardware, and response length.*
+
+**Important:** Total duration and token-generation duration measure different things. Tokens per second is calculated using `eval_count` and `eval_duration`, not `total_duration`.
+
+### 6. Modern Chat Interface
+
+The application includes:
+
+- Dark-themed user interface.
+- Purple and cyan accent colours.
+- Custom Celazims-AI branding.
+- Welcome screen.
+- Suggested conversation prompts.
+- User and assistant message bubbles.
+- Animated typing indicator.
+- Responsive message input.
+- Enter-to-send functionality.
+- Shift + Enter for a new line.
+- Error notifications.
+- Smooth scrolling to the latest message.
+
+### 7. Local AI Integration
+
+Ollama provides the local AI infrastructure.
+
+The application communicates with Ollama through its local HTTP API.
+
+This makes it possible to run the language model without requiring a cloud-based AI inference service.
+
+---
 
 ## 🛠️ Technologies Used
 
 | Technology | Purpose |
 |---|---|
 | React | Building the user interface |
-| TypeScript | Type safety and application logic |
-| Vite | Development server and build tool |
-| CSS3 | Styling and responsive design |
-| Ollama | Running the AI model locally |
-| Qwen | Generating AI responses |
-| Browser Local Storage | Saving conversation history |
+| TypeScript | Application logic and type safety |
+| Vite | Development environment and build tool |
+| CSS3 | Styling, animations, and responsive layouts |
+| Ollama | Running AI models locally |
+| Llama 3.2 | Language model used for AI responses |
+| REST API | Communication between React and Ollama |
+| Browser Local Storage | Saving conversations |
 
- 
-## ⚙️ Total Duration and Tokens per Second
+---
 
-Celazims-AI displays AI performance statistics underneath every generated response.
+## 🧠 Application Architecture
 
-### Total Duration
+Celazims-AI follows a frontend-to-local-AI architecture.
 
-The `total_duration` property represents the total time spent generating the response, measured in nanoseconds.
+The frontend handles the user interface, messages, conversation history, and performance display.
 
-Convert it into seconds:
+Ollama handles communication with the installed language model and returns generated responses.
 
-```typescript
-const totalDuration = data.total_duration / 1_000_000_000;
+### Application Flow
+
+```text
+              USER
+                |
+                v
+       React Chat Interface
+                |
+                v
+             App.tsx
+                |
+        +-------+--------+
+        |                |
+        v                v
+   Chat History      Ollama API
+   localStorage      localhost:11434
+                         |
+                         v
+                    Llama 3.2
+                         |
+                         v
+                  AI Response
+                         |
+                         v
+                  Ollama API
+                         |
+                         v
+                  App.tsx
+                         |
+            +------------+------------+
+            |            |            |
+            v            v            v
+         Message      Duration    Tokens/sec
+         Display      Display      Display
+            |
+            v
+       localStorage
 ```
 
-### Tokens per Second
+### Message Processing Workflow
 
-Ollama provides two important properties:
+1. The user enters a message.
+2. React captures the message.
+3. The application adds the message to the active conversation.
+4. The frontend sends the conversation and system prompt to Ollama.
+5. Ollama processes the request using Llama 3.2.
+6. The model generates a response.
+7. Ollama returns the response and performance metadata.
+8. React displays the AI response.
+9. The application calculates duration and tokens per second.
+10. The response and its performance information are saved in local storage.
 
-- `eval_count`: Number of tokens generated.
-- `eval_duration`: Time spent generating those tokens, in nanoseconds.
+---
 
-Calculate the generation speed:
+## 📁 Project Structure
 
-```typescript
-const tokensPerSecond =
-  data.eval_count / (data.eval_duration / 1_000_000_000);
+Celazims-AI keeps its main application code in two files to maintain a simple and manageable structure.
+
+```text
+Celazims-AI/
+│
+├── public/
+│   └── celazims-icon.png
+│
+├── src/
+│   ├── App.tsx
+│   ├── App.css
+│   └── main.tsx
+│
+├── index.html
+├── package.json
+├── package-lock.json
+├── tsconfig.json
+├── vite.config.ts
+├── README.md
+└── .gitignore
 ```
 
-###  Example API Response
+### Main Application Files
+
+**1. App.tsx**
+
+Contains the application's React and TypeScript logic.
+
+Responsibilities:
+
+- AI chat interface.
+- Ollama API connection.
+- System prompt and AI identity.
+- Sending and receiving messages.
+- Conversation management.
+- Saving and loading chat history.
+- Calculating response performance.
+- Error handling.
+- Loading indicators.
+
+**2. App.css**
+
+Contains all application styling.
+
+Responsibilities:
+
+- Main application layout.
+- Header and branding.
+- Welcome screen.
+- Conversation history panel.
+- Chat message bubbles.
+- Response statistics.
+- Input area.
+- Buttons and interactions.
+- Animations.
+- Responsive design.
+
+The existing Vite entry-point and configuration files support the application but do not require additional chat components or styling files.
+
+---
+
+## 🔌 Ollama API Integration
+
+Celazims-AI uses Ollama's local API to communicate with the installed language model.
+
+### Ollama API Address
+
+```text
+http://localhost:11434
+```
+
+### Chat Endpoint
+
+```text
+POST /api/chat
+```
+
+### Complete API URL
+
+```text
+http://localhost:11434/api/chat
+```
+
+### Example Request
+
+```json
+{
+  "model": "llama3.2:latest",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are Celazims-AI, a helpful personal AI assistant."
+    },
+    {
+      "role": "user",
+      "content": "Who are you?"
+    }
+  ],
+  "stream": false,
+  "think": false
+}
+```
+
+### Important Request Properties
+
+| Property | Purpose |
+|---|---|
+| model | Specifies which installed AI model to use. |
+| messages | Contains the system instructions and conversation messages. |
+| stream | Set to false to receive the complete response in one API result. |
+| think | Controls thinking behaviour where supported by the selected model. |
+
+The application uses:
+
+```typescript
+const OLLAMA_URL = "http://localhost:11434/api/chat";
+const MODEL = "llama3.2:latest";
+```
+
+### Ollama Response Metadata
+
+The response contains the assistant's message and performance information.
+
+Important response properties include:
 
 ```json
 {
   "message": {
     "role": "assistant",
-    "content": "Hello! How can I help you today?"
+    "content": "Hello! I am Celazims-AI."
   },
   "total_duration": 174560334,
   "eval_count": 18,
@@ -108,240 +405,237 @@ const tokensPerSecond =
 }
 ```
 
-### Displaying the Statistics
+The numerical values above are examples.
 
-Under each AI response, the interface should display:
-
-```text
-Hello! How can I help you today?
-
-⏱ Duration: 0.17 seconds
-⚡ Speed: 343.0 tokens/sec
-```
-
-*The values above are illustrative; actual statistics depend on the model and hardware.*
-
-### Important Notes
-
-- Convert nanoseconds to seconds by dividing by `1,000,000,000`.
-- Calculate tokens per second using `eval_count` and `eval_duration`.
-- Do not calculate tokens per second using `total_duration`, because total duration includes more than token generation.
-- Handle missing or zero `eval_duration` values to avoid division by zero.
-
-**Official documentation:** [Ollama API Documentation – Chat](https://docs.ollama.com/api/chat)
-
-
-## 📁 Application Structure
-
-The application code is intentionally kept in two main files.
-
-```text
-src/
-│
-├── App.tsx
-│   ├── Chat interface
-│   ├── Message handling
-│   ├── Ollama API connection
-│   ├── AI system instructions
-│   ├── Conversation history
-│   ├── Loading and error handling
-│   └── Response statistics
-│
-└── App.css
-    ├── Main layout
-    ├── Header styling
-    ├── Chat message bubbles
-    ├── Input area
-    ├── Buttons
-    ├── Animations
-    └── Responsive design
-```
-
-The existing Vite project entry-point and configuration files remain part of the development environment. The application itself is implemented in `App.tsx` and styled in `App.css`.
-
-## ⚙️ How It Works
-
-Celazims-AI uses a frontend-to-local-AI architecture.
-
-1. The user opens the React application.
-2. The user enters a question in the chat input.
-3. React captures the message and updates the conversation.
-4. The frontend sends the conversation to Ollama's API.
-5. Ollama forwards the request to the selected local AI model.
-6. The model generates a response.
-7. Ollama returns the generated response.
-8. React displays the response in the chat interface.
-9. The conversation can be saved in browser local storage.
-
-### Application Flow
-
-```text
-       USER
-         |
-         v
-   React Chat Interface
-         |
-         v
-     App.tsx
-         |
-         v
-    Ollama API
-         |
-         v
-    Qwen Model
-         |
-         v
-   Generated Response
-         |
-         v
-   React Chat Interface
-         |
-         v
-       USER
-```
+---
 
 ## 🚀 Getting Started
 
-Follow these instructions to run Celazims-AI locally.
+Follow the instructions below to install and run Celazims-AI locally.
 
-### 1. Prerequisites
+### Prerequisites
 
-Install the following:
+Make sure the following are installed:
 
 - Node.js
 - npm
 - Git
 - Ollama
+- A compatible AI model
 
-### 2. Clone the Repository
+### Step 1: Clone the Repository
+
+Open Command Prompt or a terminal and execute:
 
 ```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
+git clone http:github.com/Qhathizwe/Celazims-AI
 ```
 
-Navigate into the project:
+Navigate into the project folder:
 
 ```bash
 cd Celazims-AI
 ```
 
-### 3. Install Dependencies
+Replace the repository URL with the actual GitHub repository URL.
+
+### Step 2: Install Dependencies
+
+Run:
 
 ```bash
 npm install
 ```
 
-### 4. Install and Run Ollama
+### Step 3: Install Ollama
 
 Download Ollama from:
 
 https://ollama.com/
 
-Open Command Prompt and check the installed models:
+Install it on your computer.
+
+### Step 4: Download the AI Model
+
+Open Command Prompt and check your installed models:
 
 ```bash
 ollama list
 ```
 
-Pull the Qwen model if it is not already installed:
+If Llama 3.2 is not installed, download it:
 
 ```bash
-ollama pull qwen3:4b
+ollama pull llama3.2
 ```
 
-Start the model:
+Check the installed models again:
 
 ```bash
-ollama run qwen3:4b
+ollama list
 ```
 
-Keep Ollama available while using the application.
+The application currently expects:
 
-### 5. Start the React Application
+```text
+llama3.2:latest
+```
 
-Open a separate terminal in the project directory:
+Make sure the model name in `App.tsx` matches the name returned by `ollama list`.
+
+### Step 5: Run the AI Model
+
+Execute:
+
+```bash
+ollama run llama3.2:latest
+```
+
+Ollama must be running for the application to communicate with the model.
+
+### Step 6: Start the React Application
+
+Open another terminal in the project directory and execute:
 
 ```bash
 npm run dev
 ```
 
-Vite will provide a local development URL, usually:
+Vite will provide a local development address, usually:
 
 ```text
 http://localhost:5173
 ```
 
-Open that address in your browser.
+Open the address in your browser.
 
-## 🔌 Ollama API Integration
+You can now interact with Celazims-AI.
 
-Celazims-AI communicates with Ollama through its local API.
-
-Default Ollama address:
-
-```text
-http://localhost:11434
-```
-
-Chat API endpoint:
-
-```text
-/api/chat
-```
-
-The application uses the following request structure:
-
-```json
-{
-  "model": "qwen3:4b",
-  "messages": [
-    {
-      "role": "user",
-      "content": "Who are you?"
-    }
-  ],
-  "stream": false
-}
-```
-
-The frontend receives the generated response and displays it in the conversation.
-
-The development setup uses the `/ollama` Vite proxy route to forward requests to Ollama's local server.
+---
 
 ## 🧪 Testing the Application
 
-After starting the application, test the following:
+Use the following tests to confirm that the application is functioning correctly.
 
-- Ask: "Who are you?"
-- Ask: "Who am I?"
-- Ask: "What is your purpose?"
-- Ask a general knowledge question.
-- Ask a programming-related question.
-- Send multiple messages in the same conversation.
-- Refresh the browser and check whether saved conversation history remains.
-- Test the clear conversation functionality.
-- Stop Ollama temporarily and check the application's error handling.
+### AI Identity Testing
+
+Ask:
+
+```text
+Who are you?
+```
+
+```text
+Who am I?
+```
+
+```text
+What is your purpose?
+```
+
+### General Conversation Testing
+
+Try:
+
+```text
+Explain artificial intelligence in simple terms.
+```
+
+```text
+What is the difference between JavaScript and TypeScript?
+```
+
+```text
+Help me build a React application.
+```
+
+### Chat History Testing
+
+1. Start a conversation.
+2. Send a few messages.
+3. Click New Chat.
+4. Start another conversation.
+5. Click History.
+6. Open the previous conversation.
+7. Refresh the browser.
+8. Confirm that the conversations remain available.
+
+### Performance Statistics Testing
+
+1. Send a question.
+2. Wait for the AI response.
+3. Look underneath the response.
+4. Confirm that duration is displayed.
+5. Confirm that tokens per second are displayed.
+6. Confirm that the generated token count is displayed when available.
+
+### Error Handling Testing
+
+1. Temporarily stop Ollama.
+2. Try sending a message.
+3. Confirm that an error notification appears.
+4. Restart Ollama.
+5. Send another message.
+
+---
 
 ## 🔒 Privacy and Local Processing
 
-The AI model runs locally through Ollama. This reduces dependence on external AI services and avoids requiring a third-party cloud AI API for model inference.
+Celazims-AI is designed to run its AI model locally using Ollama.
 
-Conversation history stored in browser local storage remains in that browser's storage unless the user clears it.
+Benefits include:
 
-Local processing does not automatically guarantee complete privacy: browser storage, application logs, and any external services used by the wider application should still be considered.
+- No requirement for a cloud-based AI inference API.
+- Reduced dependence on external AI providers.
+- Local model execution.
+- Browser-based conversation storage.
+
+However, local execution does not automatically guarantee complete privacy.
+
+Conversation history is stored in browser local storage, and the application should be used on trusted devices. Other browser data, network configuration, and any future integrations should also be considered.
+
+---
 
 ## 🔮 Future Improvements
 
-Potential improvements include:
+Celazims-AI is an ongoing development project. Possible future features include:
 
-- Support for multiple locally installed AI models.
-- Streaming responses as the AI generates them.
-- Improved conversation management.
-- Exporting conversations.
+- Support for multiple AI models.
+- Model selection inside the application.
+- Streaming AI responses.
+- Markdown rendering for code and formatted answers.
+- Code syntax highlighting.
+- Conversation search.
+- Conversation renaming.
+- Export conversations to PDF or text.
 - Voice input and text-to-speech.
-- File upload and document analysis.
-- More advanced AI personalization.
-- Improved error diagnostics and connection status.
+- Document uploads and AI document analysis.
+- Improved AI memory and personalization.
+- Connection-status monitoring.
+- More advanced response analytics.
+
+---
+
+## 📚 Learning Resources
+
+The following resources are useful for understanding the technologies used in this project.
+
+| Resource | Link |
+|---|---|
+| React Documentation | https://react.dev/ |
+| TypeScript Documentation | https://www.typescriptlang.org/docs/ |
+| Vite Documentation | https://vite.dev/guide/ |
+| Ollama Documentation | https://docs.ollama.com/ |
+| Ollama API Documentation | https://docs.ollama.com/api |
+| Llama | https://www.llama.com/ |
+
+### Important Ollama API Reference
+
+https://docs.ollama.com/api/chat
+
+This documentation explains how to send chat requests, receive generated responses, and access performance metadata such as `total_duration`, `eval_count`, and `eval_duration`.
+
+---
 
 ## 👨‍💻 Developer
 
@@ -349,9 +643,29 @@ Potential improvements include:
 
 Creator and developer of Celazims-AI.
 
-- GitHub: [Qhathizwe](https://github.com/Qhathizwe)
-- Project: Celazims-AI
+- GitHub: https://github.com/Qhathizwe/Celazims-AI
+- Project Name: Celazims-AI
+- Project Type: Local AI Chatbot
+- Main Technologies: React, TypeScript, CSS, Ollama and Llama 3.2.
 
 ---
+
+## 📄 License
+
+This project is developed as a personal learning and development project.
+
+A formal open-source license can be added when the repository's distribution terms have been decided.
+
+---
+
+<p align="center">
+
+**Celazims-AI**
+
+*Think bigger. Discover more.*
+
+**Intelligent assistance, powered locally.**
+
+</p>
 
 *Celazims-AI — Intelligent assistance, powered locally.* 
